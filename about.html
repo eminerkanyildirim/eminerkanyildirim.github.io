@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" data-root="">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Emin Erkan YILDIRIM</title>
+  <meta name="description" content="Electronic engineer working across hardware, firmware and software." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body data-page="about">
+  <header class="site-header" data-header></header>
+
+  <main>
+    <section class="wrap page-head">
+      <p class="eyebrow prompt mono-label">cat about.md</p>
+      <h1>About</h1>
+      <p class="lede">Electronic engineer working end-to-end: the board, the firmware on it, and the software that makes sense of what it measures.</p>
+    </section>
+
+    <section class="wrap" style="padding-top:0">
+      <div class="prose">
+        <p>I'm an electronic engineer who likes owning a problem across the whole stack — designing the PCB, writing the firmware that runs on it, and building the software that reads and visualises its data. That means a signal-integrity decision on the board, an I2C setup in firmware, and a plotting loop in the desktop app are all part of the same job.</p>
+        <p>Day to day I work in an appliance R&amp;D lab, verifying electronic control boards for functionality, performance and IEC&nbsp;60335 safety compliance — writing the requirements, running the benchmarks, and making the calls that keep a product safe and certifiable. Alongside that, my project work sits where analog meets digital: mixed-signal boards, low-power wireless (BLE, LoRa), real-time telemetry, and the DSP that cleans up messy signals. Earlier on I helped run the electronics for a university solar-race team and interned across embedded software and automotive CAN systems.</p>
+
+        <h2>How I work</h2>
+        <ul class="check-list">
+          <li>Start from the real constraint — power budget, timing, cost, compliance — not the tool.</li>
+          <li>Prototype early, measure, and let the data settle the argument.</li>
+          <li>Prefer the simplest design that works: fewer parts, fewer failure modes.</li>
+          <li>Write firmware and tooling that the next person can actually read.</li>
+        </ul>
+      </div>
+
+      <div style="margin-top:3.5rem">
+        <div class="section-head"><span class="idx">→</span><h2>The three tracks</h2></div>
+        <div class="grid grid--3" data-render="whatido"></div>
+      </div>
+
+      <div class="cta reveal" style="margin-top:4rem">
+        <div>
+          <h2>Want the short version?</h2>
+          <p>Grab the resume, or jump straight to the projects.</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn" href="resume.html">Resume</a>
+          <a class="btn btn--solid" href="projects.html">Projects <span class="arrow">↗</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" data-footer></footer>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
