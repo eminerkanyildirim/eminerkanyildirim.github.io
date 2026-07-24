@@ -45,11 +45,18 @@ function renderHeader() {
       }>${n.label}</a></li>`
   ).join("");
 
+  const theme = currentTheme();
+  const nextLabel = theme === "dark" ? "light" : "dark";
+
   mount.innerHTML = `
     <div class="wrap nav">
       <a class="brand" href="${url("index.html")}">${esc(SITE.name)}<span class="dim"> ~/</span></a>
-      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links">menu</button>
-      <ul class="nav-links" id="nav-links">${links}</ul>
+      <div class="nav-right">
+        <ul class="nav-links" id="nav-links">${links}</ul>
+        <button class="theme-toggle" type="button" data-theme-toggle
+          aria-label="Switch to ${nextLabel} mode" title="Switch to ${nextLabel} mode">${themeIcon(theme)}</button>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links">menu</button>
+      </div>
     </div>`;
 
   const toggle = $(".nav-toggle", mount);
@@ -58,6 +65,39 @@ function renderHeader() {
     const open = list.classList.toggle("open");
     toggle.setAttribute("aria-expanded", String(open));
   });
+
+  $("[data-theme-toggle]", mount).addEventListener("click", (e) => {
+    const btn = e.currentTarget;
+    const next = currentTheme() === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    try { localStorage.setItem("theme", next); } catch (err) { /* ignore */ }
+    // Icon + label describe the mode the button will switch TO next.
+    const after = next === "dark" ? "light" : "dark";
+    btn.innerHTML = themeIcon(next);
+    btn.setAttribute("aria-label", "Switch to " + after + " mode");
+    btn.setAttribute("title", "Switch to " + after + " mode");
+  });
+}
+
+/* Reads the theme currently applied to <html> (set pre-paint by the inline
+   head script). Falls back to light. */
+function currentTheme() {
+  return document.documentElement.getAttribute("data-theme") === "dark"
+    ? "dark"
+    : "light";
+}
+
+/* Inline SVG so the icon renders everywhere (no emoji-font dependency) and
+   inherits colour via currentColor. Shows the sun while dark (tap for light),
+   the moon while light (tap for dark). */
+function themeIcon(theme) {
+  const attrs =
+    'width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+    'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+  if (theme === "dark") {
+    return `<svg ${attrs}><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>`;
+  }
+  return `<svg ${attrs}><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"></path></svg>`;
 }
 
 /* ---- Footer ------------------------------------------------- */

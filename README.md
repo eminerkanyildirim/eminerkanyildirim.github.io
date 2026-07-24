@@ -1,7 +1,11 @@
 # Portfolio — Electronic Engineer
 
-A static, data-driven portfolio site. Dark terminal / "Mono Minimal" aesthetic,
-strictly monochrome, subtle motion. No build step, no framework — plain HTML/CSS/JS.
+A static, data-driven portfolio site. Warm "Warm Bench" aesthetic — a single amber-gold
+accent on a paper-white (or, in dark mode, espresso) canvas, with light terminal flavour
+and subtle motion. Light/dark toggle in the nav (remembers your choice, defaults to your
+OS preference). No build step, no framework — plain HTML/CSS/JS. (The whole look is
+driven by CSS tokens near the top of `assets/css/style.css`: `:root` for light,
+`:root[data-theme="dark"]` for dark.)
 
 ## Edit content in ONE place
 

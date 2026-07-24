@@ -1,21 +1,41 @@
 /* =============================================================
-   style.css — Mono Minimal direction
-   Dark terminal aesthetic, strictly monochrome, subtle motion.
+   style.css — Warm Bench direction
+   Light, approachable canvas grounded in the subject's world
+   (electronics): warm paper, clean white cards, a copper accent
+   the colour of a PCB trace. Subtle motion, technical structure
+   kept — but reading as confident, not gloomy.
    ============================================================= */
 
 /* ---- Tokens ------------------------------------------------- */
 :root {
-  --bg:        #060606;
-  --surface:   #0a0a0a;
-  --surface-2: #080808;
-  --border:    #1a1a1a;
-  --border-2:  #262626;
-  --text:      #f2f2f2;
-  --text-soft: #ededed;
-  --muted:     #b5b5b5;
-  --muted-2:   #8a8a8a;
-  --dim:       #6f6f6f;
-  --dim-2:     #5a5a5a;
+  --bg:        #f7f5f0;  /* warm paper */
+  --surface:   #ffffff;  /* cards / panels pop clean */
+  --surface-2: #f1eee7;  /* hover / recessed */
+  --border:    #e7e3da;  /* hairlines */
+  --border-2:  #d8d3c7;  /* stronger edges */
+  --text:      #211e18;  /* warm near-black ink */
+  --text-soft: #322e26;
+  --muted:     #55504a;  /* body copy */
+  --muted-2:   #6e6a61;  /* secondary */
+  --dim:       #8e897e;  /* labels / meta */
+  --dim-2:     #a39e92;  /* faintest */
+
+  /* Amber-gold — the glow of a lit indicator LED / warm solder flux.
+     --accent for fills, --accent-ink is the deep gold that hits AA
+     contrast for links and numerals on the light canvas, and
+     --on-accent is the dark ink that sits on a yellow fill (white
+     text fails on yellow). */
+  --accent:      #e6a817;
+  --accent-ink:  #7a5f0f;
+  --accent-soft: #f6ecd4;
+  --on-accent:   #241f10;
+
+  /* Soft, warm-tinted elevation — friendlier than flat hairlines. */
+  --shadow-sm: 0 1px 2px rgba(50,38,22,0.05), 0 2px 6px rgba(50,38,22,0.05);
+  --shadow-md: 0 6px 22px rgba(50,38,22,0.09);
+
+  --radius:    8px;
+  --radius-sm: 6px;
 
   --font-display: "Space Grotesk", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -27,6 +47,38 @@
   --maxw: min(1362px, 94vw);
   --gutter: clamp(1.1rem, 3.5vw, 2.25rem);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---- Dark theme --------------------------------------------
+   A WARM dark (espresso charcoal, not cold black) so it stays part
+   of the same family — and the amber-gold accent glows against it.
+   Applied when <html data-theme="dark"> is set (by the inline head
+   script from saved choice or OS preference, and by the nav toggle).
+   Only the tokens flip; every component rule reads them, so the whole
+   site re-themes from here. */
+:root[data-theme="dark"] {
+  --bg:        #14120e;
+  --surface:   #1c1a15;
+  --surface-2: #24211a;
+  --border:    #2e2a22;
+  --border-2:  #3b362b;
+  --text:      #f4f1ea;
+  --text-soft: #e8e4da;
+  --muted:     #b8b2a4;
+  --muted-2:   #928d80;
+  --dim:       #6f6a5e;
+  --dim-2:     #565247;
+
+  /* Accent stays gold; the ink tone brightens so links/numerals read
+     on the dark canvas. The fill and on-accent are unchanged — the
+     yellow button looks right in both themes. */
+  --accent:      #e6a817;
+  --accent-ink:  #edc04a;
+  --accent-soft: #2a2413;
+  --on-accent:   #241f10;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.35);
+  --shadow-md: 0 8px 26px rgba(0,0,0,0.5);
 }
 
 /* ---- Reset -------------------------------------------------- */
@@ -44,7 +96,9 @@ html {
 body {
   background: var(--bg);
   color: var(--muted);
-  font-family: var(--font-mono);
+  /* Body copy is proportional now (was monospace) — warmer, easier to read.
+     Monospace is kept for the utility voice: labels, tags, nav, data, code. */
+  font-family: var(--font-display);
   /* Body text tracks the root scale set on <html> above. */
   font-size: 1rem;
   line-height: 1.65;
@@ -54,19 +108,15 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  /* faint scanline / grid texture, very subtle */
-  background-image:
-    linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px);
-  background-size: 100% 3px;
 }
 
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 
-::selection { background: var(--text); color: var(--bg); }
+::selection { background: color-mix(in srgb, var(--accent) 22%, transparent); color: var(--text); }
 
 :focus-visible {
-  outline: 2px solid var(--text);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
@@ -93,7 +143,7 @@ section { padding-block: clamp(2.25rem, 4.5vw, 3.5rem); }
 .section-head .idx {
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  color: var(--dim-2);
+  color: var(--accent-ink);
   letter-spacing: 0.15em;
 }
 .section-head h2 {
@@ -112,8 +162,8 @@ section { padding-block: clamp(2.25rem, 4.5vw, 3.5rem); }
   text-transform: uppercase;
   color: var(--dim);
 }
-.prompt { color: var(--dim-2); }
-.prompt::before { content: "$ "; }
+.prompt { color: var(--dim); }
+.prompt::before { content: "$ "; color: var(--accent-ink); }
 
 h1, h2, h3 { font-family: var(--font-display); color: var(--text); line-height: 1.12; }
 
@@ -123,7 +173,7 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); line-height: 
   width: 0.55ch;
   height: 1em;
   margin-left: 0.15ch;
-  background: var(--text);
+  background: var(--accent);
   transform: translateY(0.12em);
   animation: blink 1.15s steps(1) infinite;
 }
@@ -164,13 +214,16 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); line-height: 
   font-size: 0.8rem;
   color: var(--muted-2);
   padding: 0.4rem 0.7rem;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   transition: color 0.2s var(--ease), background 0.2s var(--ease);
 }
 .nav-links a::before { content: "cd "; color: var(--dim-2); }
-.nav-links a:hover { color: var(--text); background: var(--surface); }
-.nav-links a[aria-current="page"] { color: var(--text); }
-.nav-links a[aria-current="page"]::after { content: "_"; color: var(--text); }
+.nav-links a:hover { color: var(--text); background: var(--surface-2); }
+.nav-links a[aria-current="page"] { color: var(--accent-ink); }
+.nav-links a[aria-current="page"]::after { content: "_"; color: var(--accent); }
+
+/* Right-hand cluster: nav links + theme toggle + (mobile) menu button. */
+.nav-right { display: flex; align-items: center; gap: 0.75rem; }
 
 .nav-toggle {
   display: none;
@@ -180,9 +233,27 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); line-height: 
   font-family: var(--font-mono);
   font-size: 0.8rem;
   padding: 0.35rem 0.6rem;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
 }
+
+/* Light/dark switch — stays in the bar on every breakpoint. */
+.theme-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  background: none;
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.2s var(--ease), color 0.2s var(--ease), background 0.2s var(--ease);
+}
+.theme-toggle:hover { border-color: var(--accent); color: var(--accent-ink); background: var(--surface-2); }
 
 @media (max-width: 720px) {
   .nav-toggle { display: block; }
@@ -238,14 +309,17 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); line-height: 
   font-size: 0.82rem;
   padding: 0.7rem 1.15rem;
   border: 1px solid var(--border-2);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   color: var(--text);
   background: var(--surface);
-  transition: border-color 0.2s var(--ease), background 0.2s var(--ease), transform 0.2s var(--ease);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s var(--ease), background 0.2s var(--ease), transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
 }
-.btn:hover { border-color: var(--text); transform: translateY(-1px); }
-.btn--solid { background: var(--text); color: var(--bg); border-color: var(--text); }
-.btn--solid:hover { background: var(--text-soft); }
+.btn:hover { border-color: var(--accent); color: var(--accent-ink); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+/* Primary call-to-action wears the gold — the one warm, inviting fill.
+   Dark ink on yellow (white text fails contrast on this fill). */
+.btn--solid { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.btn--solid:hover { background: #f2b62e; border-color: #f2b62e; color: var(--on-accent); }
 .btn .arrow { transition: transform 0.2s var(--ease); }
 .btn:hover .arrow { transform: translate(2px, -2px); }
 
@@ -269,21 +343,23 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); line-height: 
 .work-row .thumb {
   width: 7.25rem;
   aspect-ratio: 16 / 10;
-  border: 1px solid var(--border-2);
-  border-radius: 3px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
   overflow: hidden;
   background: var(--surface-2);
+  box-shadow: var(--shadow-sm);
   display: grid;
   place-items: center;
 }
+/* Project images show in full colour now (they were forced to grayscale) —
+   the single biggest lift against the old gloom. */
 .work-row .thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(1) contrast(1.02);
-  transition: transform 0.3s var(--ease), filter 0.3s var(--ease);
+  transition: transform 0.3s var(--ease);
 }
-.work-row:hover .thumb img { transform: scale(1.05); filter: grayscale(1) contrast(1.08); }
+.work-row:hover .thumb img { transform: scale(1.05); }
 .work-row .thumb-ph {
   font-family: var(--font-mono);
   font-size: 1.1rem;
@@ -294,7 +370,7 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); line-height: 
 .work-row .num {
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: var(--dim-2);
+  color: var(--accent-ink);
   padding-top: 0.3rem;
 }
 .work-row .body { min-width: 0; }
@@ -312,7 +388,7 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); line-height: 
   content: "→";
   display: inline-block;
   margin-left: 0.5ch;
-  color: var(--dim);
+  color: var(--accent);
   opacity: 0;
   transform: translateX(-4px);
   transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
@@ -342,10 +418,11 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); line-height: 
 .tag {
   font-family: var(--font-mono);
   font-size: 0.68rem;
-  color: var(--muted-2);
+  color: var(--muted);
+  background: var(--surface);
   border: 1px solid var(--border-2);
-  padding: 0.12rem 0.5rem;
-  border-radius: 2px;
+  padding: 0.14rem 0.55rem;
+  border-radius: 100px;
   white-space: nowrap;
 }
 .status {
@@ -364,17 +441,17 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); line-height: 
   border-radius: 50%;
   background: var(--dim);
 }
-.status[data-status="Shipped"]::before { background: var(--text); }
+.status[data-status="Shipped"]::before { background: var(--accent); }
 .status[data-status="In progress"]::before,
 .status[data-status="Prototype"]::before {
-  background: var(--muted-2);
-  box-shadow: 0 0 0 0 rgba(242,242,242,0.5);
+  background: var(--accent);
+  box-shadow: 0 0 0 0 rgba(230,168,23,0.5);
   animation: pulse 2.2s infinite;
 }
 @keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(242,242,242,0.35); }
-  70% { box-shadow: 0 0 0 5px rgba(242,242,242,0); }
-  100% { box-shadow: 0 0 0 0 rgba(242,242,242,0); }
+  0% { box-shadow: 0 0 0 0 rgba(230,168,23,0.45); }
+  70% { box-shadow: 0 0 0 5px rgba(230,168,23,0); }
+  100% { box-shadow: 0 0 0 0 rgba(230,168,23,0); }
 }
 
 @media (max-width: 640px) {
@@ -392,14 +469,14 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); line-height: 
 }
 
 /* ---- Generic cards / panels -------------------------------- */
-.grid { display: grid; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 3px; overflow: hidden; }
+.grid { display: grid; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); }
 .grid--2 { grid-template-columns: repeat(2, 1fr); }
 .grid--3 { grid-template-columns: repeat(3, 1fr); }
 .grid--4 { grid-template-columns: repeat(4, 1fr); }
 .cell { background: var(--surface); padding: 1.5rem; transition: background 0.25s var(--ease); }
 .cell:hover { background: var(--surface-2); }
 .cell h3 { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 0.4rem; }
-.cell .track { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin-bottom: 0.9rem; }
+.cell .track { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-ink); margin-bottom: 0.9rem; }
 .cell p { color: var(--muted); font-size: 0.88rem; margin-bottom: 1rem; }
 
 @media (max-width: 820px) { .grid--3, .grid--4 { grid-template-columns: repeat(2, 1fr); } }
@@ -426,12 +503,12 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); line-height: 
 .prose h3 { font-size: 1.05rem; color: var(--text); margin: 1.75rem 0 0.75rem; }
 .prose ul { padding-left: 1.2rem; margin-bottom: 1.1rem; }
 .prose li { margin-bottom: 0.4rem; }
-.prose a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--dim); }
-.prose a:hover { text-decoration-color: var(--text); }
+.prose a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+.prose a:hover { text-decoration-color: var(--accent); }
 
 .check-list { list-style: none; padding: 0; }
 .check-list li { position: relative; padding-left: 1.5rem; margin-bottom: 0.6rem; color: var(--muted); }
-.check-list li::before { content: ">"; position: absolute; left: 0; color: var(--dim); font-family: var(--font-mono); }
+.check-list li::before { content: ">"; position: absolute; left: 0; color: var(--accent-ink); font-family: var(--font-mono); }
 
 /* ---- Definition rows (skills, resume) ---------------------- */
 .dl-rows { border-top: 1px solid var(--border); }
@@ -493,8 +570,9 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); line-height: 
 /* ---- Project detail hero image ----------------------------- */
 .cover {
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: var(--radius);
   background: var(--surface);
+  box-shadow: var(--shadow-md);
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -518,9 +596,10 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); line-height: 
   position: relative;
   aspect-ratio: 16 / 9;
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: var(--radius);
   overflow: hidden;
   background: #000;
+  box-shadow: var(--shadow-md);
   margin-bottom: 2.5rem;
 }
 .video iframe,
@@ -548,9 +627,10 @@ h1, h2, h3 { font-family: var(--font-display); color: var(--text); line-height: 
 
 /* ---- CTA band ---------------------------------------------- */
 .cta {
-  border: 1px solid var(--border-2);
-  border-radius: 3px;
-  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border));
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--accent-soft), var(--surface));
+  box-shadow: var(--shadow-sm);
   padding: clamp(2rem, 6vw, 3.5rem);
   display: flex;
   align-items: center;
