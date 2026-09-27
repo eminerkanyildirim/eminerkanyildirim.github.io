@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" data-root="{{root}}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {{theme}}
+  <title>Skills — Emin Erkan YILDIRIM</title>
+  <meta name="description" content="Skills across PCB design, firmware, RF, DSP and software." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{root}}assets/css/style.css" />
+</head>
+<body data-page="skills">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header" data-header>{{header}}</header>
+
+  <main id="main-content" tabindex="-1">
+    <section class="wrap page-head">
+      <p class="eyebrow prompt mono-label">cat skills.txt</p>
+      <h1>Skills</h1>
+      <p class="lede">Skills developed across professional work, engineering projects and coursework, from board verification and embedded firmware to data analysis.</p>
+    </section>
+
+    <section class="wrap" style="padding-top:0">
+      <dl class="dl-rows" data-render="skills">{{skills}}</dl>
+
+      <div class="section-head" style="margin-top:3.5rem"><span class="idx">→</span><h2>Tools</h2></div>
+      <dl class="dl-rows" data-render="tools">{{tools}}</dl>
+
+      <div class="section-head" style="margin-top:3.5rem"><span class="idx">→</span><h2>Languages</h2></div>
+      <dl class="dl-rows" data-render="languages">{{languages}}</dl>
+
+      <div style="margin-top:3.5rem">
+        <div class="section-head"><span class="idx">→</span><h2>Across the stack</h2></div>
+        <div class="grid grid--3" data-render="whatido">{{whatido}}</div>
+      </div>
+
+      <div class="cta reveal" style="margin-top:4rem">
+        <div>
+          <h2>Put the skills in context.</h2>
+          <p>Read my experience, or contact me about an engineering role.</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn" href="{{root}}resume.html">Resume</a>
+          <a class="btn btn--solid" href="{{root}}contact.html">Contact <span class="arrow">↗</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" data-footer>{{footer}}</footer>
+  <script src="{{root}}assets/js/main.js"></script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 name: Deploy to GitHub Pages
 
-# Static site — no build step. Publishes the repo root to Pages.
+# Generate static HTML from the shared content, then publish public files only.
 on:
   push:
     branches: [main]
@@ -23,9 +23,14 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Generate portfolio pages
+        run: node scripts/build.mjs --out-dir _site
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4

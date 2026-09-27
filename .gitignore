@@ -1,6 +1,7 @@
 # Local tooling / notes — not part of the published site
 CLAUDE.md
 .claude/
+_site/
 
 # OS / editor junk
 .DS_Store

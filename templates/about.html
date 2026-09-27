@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" data-root="{{root}}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {{theme}}
+  <title>About — Emin Erkan YILDIRIM</title>
+  <meta name="description" content="Emin Erkan Yıldırım — electronic engineer working in appliance R&amp;D, with project experience in PCB design, embedded firmware and data acquisition." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{root}}assets/css/style.css" />
+</head>
+<body data-page="about">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header" data-header>{{header}}</header>
+
+  <main id="main-content" tabindex="-1">
+    <section class="wrap page-head">
+      <p class="eyebrow prompt mono-label">cat about.md</p>
+      <h1>About</h1>
+    </section>
+
+    <section class="wrap" style="padding-top:0">
+      <div class="prose">
+        <p>I'm an electronic engineer focused on electronics R&amp;D, hardware design and embedded firmware. At Vestel's appliance R&amp;D lab, I test tumble-dryer electronic control boards for functionality, performance and IEC&nbsp;60335 safety compliance. I also prepare requirements and technical specifications, benchmark products, and evaluate components and suppliers.</p>
+        <p>My project work connects the circuit board to the code and the data it produces: a wearable ECG sensor with a custom PCB and BLE firmware, a solar-car telemetry application, and discrete-logic and robotics course projects. Earlier, I contributed to a university solar-race team's electronics and completed internships in embedded software and automotive CAN systems.</p>
+
+        <h2>How I work</h2>
+        <ul class="check-list">
+          <li>Start from the real constraint — power budget, timing, cost, compliance — not the tool.</li>
+          <li>Prototype early, measure, and let the data settle the argument.</li>
+          <li>Prefer the simplest design that works: fewer parts, fewer failure modes.</li>
+          <li>Write firmware and tooling that the next person can actually read.</li>
+        </ul>
+
+        <h2>Currently exploring</h2>
+        <p>Alongside my engineering work, I'm building my Linux, networking and embedded-security knowledge, with an interest in how connected devices handle firmware and communication safely.</p>
+      </div>
+
+      <div style="margin-top:3.5rem">
+        <div class="section-head"><span class="idx">→</span><h2>The three tracks</h2></div>
+        <div class="grid grid--3" data-render="whatido">{{whatido}}</div>
+      </div>
+
+      <div class="cta reveal" style="margin-top:4rem">
+        <div>
+          <h2>Let's talk engineering.</h2>
+          <p>Read my experience, or get in touch about hardware and embedded work.</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn" href="{{root}}resume.html">Resume</a>
+          <a class="btn btn--solid" href="{{root}}contact.html">Contact <span class="arrow">↗</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" data-footer>{{footer}}</footer>
+  <script src="{{root}}assets/js/main.js"></script>
+</body>
+</html>

@@ -1,13 +1,14 @@
 /* =============================================================
-   data.js — single source of truth for the whole site.
-   Edit THIS file to update content. No other file should need
-   to change to add a project, skill, or update contact details.
+   data.js — shared source for structured portfolio content.
+   Add projects and update skills/contact details here, then run
+   node scripts/build.mjs to regenerate the static pages.
    ============================================================= */
 
 /* ---- Site owner / contact ---------------------------------- */
 const SITE = {
   name: "Emin Erkan YILDIRIM",
   role: "Electronic Engineer",
+  url: "https://eminerkanyildirim.github.io/",
   // Plain-English, dual-audience one-liner (HR + engineers):
   tagline:
     "I design circuit boards, program the chips on them, and build the software that reads their data.",
@@ -45,15 +46,26 @@ const WHAT_I_DO = [
 
 /* ---- Skills ------------------------------------------------- */
 const SKILLS = [
-  { name: "PCB Design", detail: "KiCad — mixed-signal, schematic to bring-up" },
-  { name: "Embedded C", detail: "RSL10, STM32, bare-metal firmware" },
-  { name: "BLE / RF", detail: "RSL10 BLE, LoRa link bring-up" },
+  { name: "PCB Design", detail: "KiCad — mixed-signal, schematic to bring-up", project: "ble-ecg-motion-sensor" },
+  { name: "Embedded C", detail: "RSL10, STM32, bare-metal firmware", project: "ble-ecg-motion-sensor" },
+  { name: "BLE / RF", detail: "RSL10 BLE, LoRa link bring-up", project: "ble-ecg-motion-sensor" },
   { name: "CAN bus", detail: "Automotive networking, signal modelling & layout" },
   { name: "Buses & Protocols", detail: "SPI, I2C, UART, MIL-STD-1553, TCP/UDP" },
   { name: "Digital / RTL", detail: "SystemVerilog, discrete-logic design" },
-  { name: "C# / .NET", detail: "Real-time desktop UIs & data logging" },
-  { name: "Python", detail: "Automation, robotics (Webots), data tooling" },
-  { name: "Signal Processing", detail: "Filtering, protocol reverse-engineering, MATLAB" },
+  { name: "C# / .NET", detail: "Real-time desktop UIs & data logging", project: "solaris-telemetry" },
+  { name: "Python", detail: "Automation, robotics (Webots), data tooling", project: "quadruped-spider-robot" },
+  { name: "Signal Processing", detail: "Filtering, protocol reverse-engineering, MATLAB", project: "ble-ecg-motion-sensor" },
+];
+
+/* ---- Tools and languages (from CV) ------------------------- */
+const TOOLS = [
+  { name: "Circuit design & simulation", detail: "KiCad, LTspice, QUCS, Proteus" },
+  { name: "Analysis & simulation", detail: "MATLAB, Webots" },
+];
+
+const LANGUAGES = [
+  { name: "English", detail: "Advanced" },
+  { name: "Turkish", detail: "Native" },
 ];
 
 /* ---- Experience --------------------------------------------
@@ -67,11 +79,11 @@ const EXPERIENCE = [
     location: "Manisa, Türkiye",
     period: "Oct 2024 – Present",
     points: [
-      "Verify the electronic control boards used in tumble dryers for functionality, performance, and IEC 60335 compliance.",
-      "Prepare engineering requirements and technical specification documents.",
-      "Run benchmark studies and competitor teardowns to find components suitable for integration.",
-      "Make design decisions for product safety and regulatory compliance.",
-      "Work with new component suppliers to win advantages in cost and quality.",
+      "Test and verify tumble-dryer electronic control boards for functionality, performance and IEC 60335 safety compliance.",
+      "Define engineering requirements and document technical specifications for product development.",
+      "Benchmark products and examine competitor designs to evaluate components for integration.",
+      "Contribute to design decisions with product safety and regulatory compliance in mind.",
+      "Evaluate new component suppliers for cost and quality improvements.",
     ],
   },
   {
@@ -128,27 +140,24 @@ const EDUCATION = [
 ];
 
 /* ---- Projects ----------------------------------------------
-   Data-driven. Add a project = add one object here.
+   Data-driven. Add a project = add one object here and regenerate.
    Fields:
-     slug      unique id, used in the URL (project.html?p=<slug>)
+     slug      unique id, used in the URL (projects/<slug>.html)
      title     display name
      oneLiner  plain-English: what it does / who it's for  (HR-readable)
      tags      short tech tags (engineer signal)
-     status    "Shipped" | "In progress" | "Prototype" | "Archived"
+     status    "Shipped" | "In progress" | "Prototype" | "Completed course project" | "Archived"
      year      string
      cover     static image path (assets/img/<file>). This is what shows in
                the project ROW on the homepage / projects list.
-     gif       optional animated gif (assets/img/<file>.gif) — a screen
-               recording of the thing actually running. Shown on the DETAIL
-               page only; rows keep using `cover` so the list stays calm.
-               Media order on the detail page: video > gif > cover.
-     gifAlt    optional alt text for the gif (defaults to "<title> in action")
+     gif       legacy field; MP4/WebM files receive playback controls.
+               GIF files fall back to the static cover to avoid unpausable motion.
      video     optional. A YouTube/Vimeo link OR a local file. Any of:
                  "https://youtu.be/XXXXXXXXXXX"
                  "https://www.youtube.com/watch?v=XXXXXXXXXXX"
                  "https://vimeo.com/123456789"
                  "assets/vid/demo.mp4"   (drop the file in assets/vid/)
-               If set, the video shows instead of the cover image.
+               Controlled playback, no autoplay. The cover is used as a poster.
      summary   short plain-English blurb (used on cards + as fallback text)
      body      optional array of paragraphs — the full explanation for the
                detail page. Write as many as you like: ["para 1", "para 2"].
@@ -169,10 +178,8 @@ const PROJECTS = [
     year: "2022",
     // Static image — used for the row on the homepage / projects list.
     cover: "assets/img/solaris-telemetry.png",
-    // Animated screen recording — shown on the detail page only.
-    gif: "assets/img/solaris-telemetry.gif",
-    gifAlt: "The Solaris telemetry dashboard updating live as the car sends data",
-    video: "",
+    // Screen recording with playback controls on the detail page.
+    video: "assets/vid/solaris-telemetry.mp4",
     summary:
       "A C# telemetry application for a solar-powered race car. It reads UART serial data from a USB-connected LoRa receiver, parses and validates packets, displays live graphs with LiveCharts, and saves the parsed readings to CSV.",
     body: [
@@ -209,7 +216,7 @@ const PROJECTS = [
     slug: "ble-ecg-motion-sensor",
     title: "Smart Sportswear — BLE ECG & Motion Sensor Node",
     oneLiner:
-      "A garment-integrated prototype that reads ECG through conductive-yarn electrodes and motion through an MPU-6050 accelerometer, then transmits the readings using BLE GATT notifications.",
+      "A wearable prototype that measures heart activity and movement through sensors integrated into a shirt, then sends the readings wirelessly to a phone.",
     tags: ["BLE", "RSL10", "Embedded C"],
     status: "Prototype",
     year: "2023",
@@ -219,23 +226,26 @@ const PROJECTS = [
     body: [
       "My graduation thesis: sportswear with the electronics knitted in. Instead of gel pads and wires, the ECG electrodes are conductive yarn worked into a t-shirt, so the sensors sit against the body without restricting how the athlete moves. The goal was a garment that stays light and comfortable while continuously reporting heart activity, motion and breathing.",
       "The heart of it is an ON Semiconductor RSL10 — an ultra-low-power ARM Cortex-M3 with an integrated BLE radio, chosen so the whole thing runs off a coin cell without an external DC/DC converter. An AD8232 analog front-end conditions the faint ECG signal picked up by the conductive-yarn electrodes; an MPU-6050 IMU (read over I2C) provides 3-axis motion; and an ICS-43434 MEMS microphone captures breath sounds over I2S for respiration-rate work.",
-      "On the firmware side I wrote the application layer on top of ON Semi's RSL10 CMSIS-Pack: ADC sampling of the ECG on DIO2 with moving-average filtering, IMU communication and the main loop, and two custom 128-bit GATT services that carry the sensor data as BLE Notify characteristics. ECG samples are encoded in IEEE-11073 SFLOAT format; accelerometer axes go out as scaled ASCII. The underlying BLE stack, FOTA infrastructure and pairing implementation are vendor-provided components; my contribution was the sensor application firmware.",
+      "On the firmware side I wrote the application layer on top of ON Semi's RSL10 CMSIS-Pack: ADC sampling of the ECG on DIO2 with moving-average filtering, IMU communication and the main loop, and two custom 128-bit GATT services that carry the sensor data as BLE Notify characteristics. ECG samples use 32-bit IEEE-11073-style encoding; accelerometer axes go out as scaled ASCII. The underlying BLE stack, FOTA infrastructure and pairing implementation are vendor-provided components; my contribution was the sensor application firmware.",
       "The custom PCB was designed in KiCad and kept deliberately tiny for ergonomics, with hole pads so the conductive yarns from the AD8232 could be heat-fixed to the fabric. Bringing it up surfaced a real hardware bug: the RSL10 inputs only tolerate ~2.2 V, so the AD8232 output needed a voltage divider that the first board lacked — I patched the first revision by scraping the board and soldering SMD resistors, then respun a cleaner second PCB with rounded corners, proper programming-header placement and a spot for the MEMS mic.",
       "To make sense of the data off the device, I wrote a standalone C tool that parses nRF Connect BLE logs, demultiplexes the payload by characteristic UUID, decodes both wire formats (ASCII and IEEE-11073), and writes timestamped CSVs per signal. A MATLAB script then runs findpeaks() on per-activity ECG (rest / walking / squat) for R-wave detection and heart-rate estimation, and a 200–800 Hz Butterworth + envelope + peak-detection pipeline turned the mic recording into a respiration rate — about 14 breaths per minute in testing.",
     ],
     highlights: [
       "ECG measured through conductive-yarn electrodes knitted into the shirt — no gel pads or skin-side wires",
       "RSL10 (Cortex-M3 + BLE) firmware streaming ECG + 3-axis motion to a phone as GATT Notify characteristics",
-      "ECG encoded in IEEE-11073 SFLOAT format; accelerometer axes as scaled ASCII",
+      "ECG samples use 32-bit IEEE-11073-style encoding; accelerometer axes use scaled ASCII",
       "Application firmware for ECG sampling, MPU-6050 acquisition over I2C and BLE GATT notifications",
       "Custom KiCad PCB, coin-cell powered; found and fixed a missing AD8232 voltage divider against the RSL10's 2.2 V input limit",
-      "Host-side C log-decoder and MATLAB analysis: R-peak heart-rate detection and ~14 bpm respiration rate from a MEMS mic",
+      "Host-side C log-decoder and MATLAB analysis: R-peak heart-rate detection and about 14 breaths/minute respiration rate from a MEMS mic",
     ],
     stack: [
       "ON Semiconductor RSL10 (ARM Cortex-M3 + BLE)",
       "Embedded C / RSL10 CMSIS-Pack",
-      "AD8232 ECG · MPU-6050 IMU (I2C) · ICS-43434 MEMS mic (I2S)",
-      "BLE / GATT notifications · IEEE-11073 SFLOAT",
+      "AD8232 ECG front-end",
+      "MPU-6050 IMU (I2C)",
+      "ICS-43434 MEMS mic (I2S)",
+      "BLE / GATT notifications",
+      "32-bit IEEE-11073-style encoding",
       "KiCad (PCB & schematic)",
       "C & MATLAB (host-side decode + analysis)",
     ],
@@ -252,17 +262,17 @@ const PROJECTS = [
     oneLiner:
       "A four-legged walking robot I modelled and simulated in Webots for a robotics course — a Python controller coordinates the leg movements through a state machine.",
     tags: ["Webots", "Python", "Robotics"],
-    status: "Archived",
+    status: "Completed course project",
     year: "2023",
     cover: "assets/img/quadruped-spider.jpg",
     video: "assets/vid/quadruped-spider.mp4",
     summary:
       "A quadruped 'spider' robot designed and simulated in Webots for a Fundamentals of Robotics course. Twelve motors (three per leg) are driven from a Python controller that walks the robot with a creep gait — keeping its centre of mass inside the triangle of grounded feet so it stays balanced while moving.",
     body: [
-      "A university Fundamentals of Robotics (ETE3007) project: a four-legged 'spider' robot built and walked entirely in the Webots simulator. The goal was to take a legged robot from a 3D model to a stable, self-balancing walk driven by code.",
+      "A university Fundamentals of Robotics (ETE3007) project: a four-legged 'spider' robot built and walked entirely in the Webots simulator. The goal was to take a legged robot from a 3D model to a statically balanced creep gait driven by code.",
       "The custom robot has four legs of three segments each — 12 joints in total: eight rotary hinge joints and four linear slider joints, one motor apiece. The sliders on the feet push and pull the body along while walking, and the legs sit near the body's corners for balance. The whole thing is described as a URDF model and runs in a Webots R2023a world.",
       "Walking uses a creep gait. At any moment three feet stay planted and the robot keeps its centre of mass inside the triangle those three feet make — if it drifts outside that triangle for too long, the robot tips over. So the legs move one at a time: lift, swing forward, plant, then shift the body. I worked out the per-leg joint angles from the target foot position using the standard inverse-kinematics relations (coxa / femur / tibia).",
-      "The Python controller drives it as a 12-step state machine: a `robot_constant_pos()` routine first sets every motor to a known balanced pose, then each simulation tick advances one step of the cycle — raise the front-right leg, reach it forward, pull the body across with the front leg while pushing with the opposite back leg, reset, and mirror the whole sequence on the other side. Each motor is commanded with a target position and a deliberately low velocity so the shifts stay smooth and balanced.",
+      "The Python controller drives it as a 12-step state machine: the robot_constant_pos() routine first sets every motor to a known balanced pose, then each simulation tick advances one step of the cycle — raise the front-right leg, reach it forward, pull the body across with the front leg while pushing with the opposite back leg, reset, and mirror the whole sequence on the other side. Each motor is commanded with a target position and a deliberately low velocity so the shifts stay smooth and balanced.",
       "An earlier attempt reused a pre-made robot model from the course, but its joints were coupled in a way that turned all four legs whenever one leg was commanded — impossible to gait cleanly. Rebuilding a custom robot from scratch, where every joint was known and independently controllable, is what made the balanced creep walk work.",
     ],
     highlights: [
@@ -288,7 +298,7 @@ const PROJECTS = [
     oneLiner:
       "A distance meter that shows how far away something is on a two-digit display — built entirely from basic logic chips, with no microcontroller or code anywhere in it.",
     tags: ["Ultrasonic", "Digital Logic", "555"],
-    status: "Archived",
+    status: "Completed course project",
     year: "2023",
     cover: "assets/img/rangefinder.png",
     summary:
@@ -304,7 +314,7 @@ const PROJECTS = [
       "555 astable tuned to about 58.5 µs for approximately one count per centimetre of target distance",
       "AND-gates the HC-SR04 ECHO against the 555 clock to convert echo time into a pulse train",
       "Decade counters drive a two-digit seven-segment display",
-      "CD4013 D flip-flop latches the >99 cm over-range condition to light a red LED",
+      "CD4013 D flip-flop latches counter overflow beyond the two display digits and lights a red LED",
       "Prototyped in Proteus, then simplified on the bench for far more reliable readings",
     ],
     stack: [

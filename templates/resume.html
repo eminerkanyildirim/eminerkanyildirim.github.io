@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" data-root="{{root}}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {{theme}}
+  <title>Resume — Emin Erkan YILDIRIM</title>
+  <meta name="description" content="Resume / CV — electronic engineer working across hardware, firmware and software." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{root}}assets/css/style.css" />
+</head>
+<body data-page="resume">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header" data-header>{{header}}</header>
+
+  <main id="main-content" tabindex="-1">
+    <section class="wrap page-head">
+      <p class="eyebrow prompt mono-label">cat resume.md</p>
+      <h1>Resume</h1>
+      <p class="lede">Experience in electronics R&amp;D and board verification, supported by projects in hardware design, embedded firmware and data acquisition.</p>
+      <div class="btn-row" style="margin-top:1.75rem">
+        <a class="btn btn--solid" href="{{resumePdf}}" download>Download PDF <span class="arrow">↓</span></a>
+        <a class="btn" href="{{root}}contact.html">Contact</a>
+      </div>
+    </section>
+
+    <section class="wrap" style="padding-top:0">
+      <div class="section-head"><span class="idx">01</span><h2>Experience</h2></div>
+      <div class="cv-list" data-render="experience">{{experience}}</div>
+
+      <div class="section-head" style="margin-top:3.5rem"><span class="idx">02</span><h2>Extracurricular</h2></div>
+      <div class="cv-list" data-render="activities">{{activities}}</div>
+
+      <div class="section-head" style="margin-top:3.5rem"><span class="idx">03</span><h2>Education</h2></div>
+      <div class="cv-list" data-render="education">{{education}}</div>
+
+      <div class="section-head" style="margin-top:3.5rem"><span class="idx">04</span><h2>Core skills</h2></div>
+      <dl class="dl-rows" data-render="skills">{{skills}}</dl>
+
+      <div class="section-head" style="margin-top:3.5rem"><span class="idx">05</span><h2>Languages</h2></div>
+      <dl class="dl-rows" data-render="languages">{{languages}}</dl>
+
+      <div class="cta reveal" style="margin-top:4rem">
+        <div>
+          <h2>Want to talk?</h2>
+          <p>Open to engineering roles and interesting hardware/software problems.</p>
+        </div>
+        <a class="btn btn--solid" href="{{root}}contact.html">Get in touch <span class="arrow">↗</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" data-footer>{{footer}}</footer>
+  <script src="{{root}}assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" data-root="{{root}}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {{theme}}
+  <title>Projects — Emin Erkan YILDIRIM</title>
+  <meta name="description" content="Selected engineering projects — hardware, firmware and software." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{root}}assets/css/style.css" />
+</head>
+<body data-page="projects">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header" data-header>{{header}}</header>
+
+  <main id="main-content" tabindex="-1">
+    <section class="wrap page-head">
+      <p class="eyebrow prompt mono-label">ls ~/projects</p>
+      <h1>Projects</h1>
+      <p class="lede">Wearable sensing, embedded firmware, race-car telemetry and digital logic — projects connecting physical measurements to useful data and control.</p>
+    </section>
+
+    <section class="wrap" style="padding-top:0">
+      <ul class="work-list" data-render="projects">{{projects}}</ul>
+      <div class="cta reveal" style="margin-top:4rem">
+        <div>
+          <h2>Have an engineering role in mind?</h2>
+          <p>See my professional experience, or get in touch to discuss the work.</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn" href="{{root}}resume.html">Resume</a>
+          <a class="btn btn--solid" href="{{root}}contact.html">Contact <span class="arrow">↗</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" data-footer>{{footer}}</footer>
+  <script src="{{root}}assets/js/main.js"></script>
+</body>
+</html>

@@ -1,76 +1,99 @@
 # Portfolio — Electronic Engineer
 
-A static, data-driven portfolio site. Warm "Warm Bench" aesthetic — a single amber-gold
-accent on a paper-white (or, in dark mode, espresso) canvas, with light terminal flavour
-and subtle motion. Light/dark toggle in the nav (remembers your choice, defaults to your
-OS preference). No build step, no framework — plain HTML/CSS/JS. (The whole look is
-driven by CSS tokens near the top of `assets/css/style.css`: `:root` for light,
-`:root[data-theme="dark"]` for dark.)
+Emin Erkan Yıldırım's static engineering portfolio, hosted on GitHub Pages.
+It keeps the existing Warm Bench palette, Space Grotesk / JetBrains Mono typography,
+and light/dark themes. Plain HTML/CSS/JavaScript; no framework or npm dependencies.
 
-## Edit content in ONE place
+Pages are generated ahead of time with a small Node script. Project descriptions,
+resume entries, navigation and contact details are readable without JavaScript.
+JavaScript enhances the mobile menu, theme toggle and copy-email button.
 
-Everything you'll want to change lives in **[`assets/js/data.js`](assets/js/data.js)**:
+## Edit content
 
-- `SITE` — name, role, tagline, location, email, GitHub, LinkedIn, CV path.
-- `PROJECTS` — the project list. **Add a project = add one object** (see the
-  field notes in the file). Cards, the projects list, and each detail page all
-  render from this array automatically.
-- `SKILLS`, `WHAT_I_DO` — skills and the hardware/firmware/software breakdown.
-- `EXPERIENCE`, `ACTIVITIES`, `EDUCATION` — work history, extracurriculars and
-  education, rendered on the résumé page.
-- `POSTS` — optional blog posts (empty state handled).
+- **`assets/js/data.js`**: owner details, project records, skills, tools, languages,
+  work history and education. This remains the shared source of structured content.
+- **`templates/*.html`**: page introductions, layouts and calls to action.
+- **`scripts/render.mjs`**: shared navigation, footer and data-driven markup.
+- **`assets/css/style.css`**: theme tokens and responsive styles.
+- **`assets/js/main.js`**: browser interactions only.
 
-You should not need to touch the HTML to update content.
-
-### Updating details
-1. Edit `SITE` in `assets/js/data.js` (name, contact, links).
-2. The CV PDF lives at `assets/Emin-Erkan-Yildirim-CV.pdf` — replace that file to
-   swap the download (or change `SITE.resumePdf` and the link in `resume.html`).
-3. Add project images under `assets/img/` and set each project's `cover`.
-
-### Project media
-Each project can show a static image, an animated gif, or a video. Drop the file
-in `assets/img/` (or `assets/vid/`) and set the matching field:
-
-| field | use |
-|---|---|
-| `cover` | static image — shown in the project **row** (homepage / projects list) |
-| `gif` | screen recording of the thing running — shown on the **detail page** |
-| `video` | YouTube/Vimeo link, or a local `.mp4` in `assets/vid/` |
-
-Rows always use `cover`, so the lists stay calm — a page of looping gifs is
-noisy. The gif is the payoff on the detail page, where precedence is
-**`video` → `gif` → `cover`** → placeholder. Set `gifAlt` for the gif's alt text
-(defaults to "&lt;title&gt; in action").
-
-Gifs of a full UI get large quickly — if one lands above a few MB, prefer an
-`.mp4` via `video` instead, since the homepage loads it.
-
-## Pages
-`index` · `about` · `projects` (list) · `project.html?p=<slug>` (detail) ·
-`skills` · `resume` · `blog` · `contact` · `404`.
-
-Shared nav/footer are injected by [`assets/js/main.js`](assets/js/main.js), so
-they only exist in one place.
-
-## Run locally
-Any static server works, e.g.:
+After editing content or templates, regenerate the checked-in HTML:
 
 ```bash
-python3 -m http.server 8000
-# then open http://localhost:8000
+node scripts/build.mjs
 ```
 
-(Open via a server, not `file://` — the pages load `data.js` as a script,
-which is fine, but a server matches how Pages serves it.)
+Do not edit the generated root HTML files or `projects/*.html` directly: regeneration
+will replace them. Add a project by adding one record to `PROJECTS`, plus its media,
+and running the command. A separate project HTML page, metadata, links and sitemap
+entry are generated automatically. No card markup needs to be copied.
 
-## Deploy to GitHub Pages
-1. Push this repo to GitHub.
-2. **Settings → Pages → Build and deployment → Source: GitHub Actions.**
-3. The included workflow (`.github/workflows/deploy.yml`) publishes the repo
-   root on every push to `main`.
+`SITE.url` is the public HTTPS base URL, including any project subpath and a trailing
+slash. It controls canonical/share URLs and the custom 404's root-relative paths.
+Set it before moving the site to another domain or GitHub Pages subpath.
 
-The site uses **relative paths** throughout, so it works both at a user/org
-Pages root (`https://<user>.github.io/`) and a project Pages sub-path
-(`https://<user>.github.io/<repo>/`) with no config change. A `.nojekyll` file
-is included so nothing gets stripped.
+## CV
+
+The downloadable PDF is `assets/Emin-Erkan-Yildirim-CV.pdf`. Replace that file to
+update the CV; regeneration does not edit its contents. Change `SITE.resumePdf`
+if the filename changes. The owner maintains the PDF separately.
+
+## Project media
+
+| Field | Use |
+| --- | --- |
+| `cover` | Static thumbnail, video poster and project share image |
+| `video` | Local MP4/WebM, or a YouTube/Vimeo URL |
+| `gif` | Legacy field; video files get controls, GIFs use the static cover |
+
+Videos have controls and do not autoplay, so a static poster is shown until the
+visitor chooses to play. Solaris uses a compressed MP4 derived from the original
+GIF; the original is retained as a source asset but is no longer loaded by the pages.
+
+## Run and verify
+
+Node 22 or later is recommended for generation; there are no packages to install.
+
+```bash
+node scripts/build.mjs
+node scripts/build.mjs --check
+python3 -m http.server 8000
+```
+
+Open `http://localhost:8000`. Verify mobile navigation, light/dark mode, project
+links, media controls and the CV download after changes. `--check` compares the
+checked-in HTML and metadata against the current templates/data and exits with an
+error if regeneration is needed.
+
+## Pages and links
+
+`index.html` · `about.html` · `projects.html` · `skills.html` · `resume.html` ·
+`contact.html` · `404.html` · `projects/<slug>.html`.
+
+Share the static `projects/<slug>.html` URLs. Each includes its own description,
+canonical URL and social preview metadata without relying on a crawler executing
+JavaScript. Old `project.html?p=<slug>` bookmarks redirect to the corresponding
+static page; without JavaScript, the legacy page offers links to every project.
+Invalid slugs show a useful error and project choices.
+
+`404.html` uses the configured site-root path for assets and recovery links, so it
+also works for missing URLs several directories deep. A plain Python server uses
+its own error document; test the generated custom 404 with a Pages-compatible
+server or by serving that document at a nested missing URL.
+
+## Deploy
+
+The GitHub Actions workflow generates the site on pushes to `main` or manual runs.
+Only generated HTML, the sitemap/robots files, `.nojekyll` and `assets/` are included
+in the Pages artifact; templates, scripts and local project documentation are not
+published.
+
+Build the same deployable directory locally with:
+
+```bash
+node scripts/build.mjs --out-dir _site
+```
+
+The standard pages use relative links; the public base URL handles metadata and
+404 recovery. In repository settings, select **Pages → GitHub Actions** as the
+publishing source.
