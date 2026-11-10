@@ -51,7 +51,7 @@ const SKILLS = [
   { name: "BLE / RF", detail: "RSL10 BLE, LoRa link bring-up", project: "ble-ecg-motion-sensor" },
   { name: "CAN bus", detail: "Automotive networking, signal modelling & layout" },
   { name: "Buses & Protocols", detail: "SPI, I2C, UART, MIL-STD-1553, TCP/UDP" },
-  { name: "Digital / RTL", detail: "SystemVerilog, discrete-logic design" },
+  { name: "Digital / RTL", detail: "SystemVerilog, discrete-logic design; currently studying RISC-V on FPGA" },
   { name: "C# / .NET", detail: "Real-time desktop UIs & data logging", project: "solaris-telemetry" },
   { name: "Python", detail: "Automation, robotics (Webots), data tooling", project: "quadruped-spider-robot" },
   { name: "Signal Processing", detail: "Filtering, protocol reverse-engineering, MATLAB", project: "ble-ecg-motion-sensor" },
@@ -66,6 +66,7 @@ const TOOLS = [
 const LANGUAGES = [
   { name: "English", detail: "Advanced" },
   { name: "Turkish", detail: "Native" },
+  { name: "German", detail: "Beginner (learning)" },
 ];
 
 /* ---- Experience --------------------------------------------
