@@ -98,6 +98,16 @@ const EXPERIENCE = [
     ],
   },
   {
+    role: "Part-Time IT Support Assistant",
+    org: "Dokuz Eylul University IT Department",
+    location: "İzmir, Türkiye",
+    period: "Dec 2022 – Jun 2023",
+    points: [
+      "Serviced about five computers per day: hardware maintenance, motherboard replacement and operating-system reinstallation.",
+      "Provided software installation and troubleshooting support to university users.",
+    ],
+  },
+  {
     role: "Research & Development Intern",
     org: "Güleryüz Karoser Otomotiv",
     location: "Bursa, Türkiye",

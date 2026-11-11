@@ -15,8 +15,8 @@ gi.require_version("Pango", "1.0")
 gi.require_version("PangoCairo", "1.0")
 from gi.repository import Pango, PangoCairo  # noqa: E402
 
-FONT, SIZE = "Noto Sans", 9.6
-PAGE_W, PAGE_H, MX, MY = 595.28, 841.89, 40, 30  # A4, points
+FONT, SIZE = "Noto Sans", 9.3
+PAGE_W, PAGE_H, MX, MY = 595.28, 841.89, 40, 24  # A4, points
 LINK = "#0B57D0"
 FONT_OPTS = cairo.FontOptions()
 FONT_OPTS.set_hint_metrics(cairo.HINT_METRICS_OFF)  # unhinted advances: even letter spacing in print
@@ -41,28 +41,34 @@ BODY = [
     ("li", "Work with software and firmware teams on hardware–firmware integration."),
     ("li", "Write test procedures based on applicable IEC 60335 requirements, prepare engineering requirements specifications and hardware-development documentation, and report test results."),
     ("li", "Benchmark competitor products and coordinate with suppliers to evaluate alternative components for technical suitability, cost, quality, and availability."),
-    ("gap", 4),
+    ("gap", 3),
     ("row", "<b>Embedded Software Engineering Intern,</b> Baykar Technologies – İstanbul, Türkiye", "July 2023 – August 2023"),
     ("li", "Studied Data Distribution Service (DDS), compared it with alternative communication protocols, and presented the technical findings."),
     ("li", "Developed a basic Python application to simulate DDS communication."),
-    ("gap", 4),
+    ("gap", 3),
+    ("row", "<b>Part-Time IT Support Assistant,</b> Dokuz Eylul University IT Department – İzmir, Türkiye", "December 2022 – June 2023"),
+    ("li", "Serviced about five computers per day: maintenance, motherboard replacement, OS reinstallation, and software support."),
+    ("gap", 3),
     ("row", "<b>Research and Development Intern,</b> Güleryüz Karoser Otomotiv A.Ş. – Bursa, Türkiye", "July 2022 – August 2022"),
     ("li", "Reviewed CAN bus routing in an electric-bus electrical-system model and determined required cable lengths."),
     ("li", "Standardized signal names in the model to support production-line installation."),
     ("h", "Selected Engineering Projects"),
     ("row", "<b>M.Sc. Thesis: RISC-V Affine-Arithmetic Processing Unit on FPGA</b>", "In progress"),
-    ("li", "Designing an FPGA hardware unit, driven by a RISC-V core through custom instructions, to speed up uncertainty and tolerance analysis of engineering systems."),
-    ("gap", 4),
+    ("li", "Designing a RISC-V-driven FPGA unit with custom instructions to accelerate uncertainty and tolerance analysis."),
+    ("gap", 3),
     ("row", "<b>Smart Sportswear: BLE ECG &amp; Motion Sensor (TÜBİTAK 1001)</b>", "2023"),
     ("li", "Designed and revised a compact KiCad PCB for a garment-integrated ECG and motion-sensing system using conductive-yarn electrodes."),
     ("li", "Identified an ECG interface voltage-level mismatch during board bring-up, reworked the prototype, and incorporated the correction into a PCB revision."),
     ("li", "Developed RSL10 application firmware in C for ECG sampling, MPU-6050 accelerometer acquisition over I2C, and data transmission using BLE GATT notifications."),
     ("li", "Developed a C tool for decoding BLE logs into CSV files and MATLAB scripts for ECG peak detection and heart-rate estimation."),
-    ("gap", 4),
+    ("gap", 3),
     ("row", "<b>Solar-Car Telemetry, CAN Communication &amp; Data Logging (Solar Team Solaris)</b>", "2022"),
     ("li", "Developed CAN communication software in C on an STM32 microcontroller and built circuitry for communication testing and validation."),
     ("li", "Analyzed LoRa telemetry frames using HTerm and developed a C# application to receive packets through a USB-connected LoRa module and parse their contents into categorized data."),
     ("li", "Implemented packet-checksum validation, live visualization with LiveCharts, and CSV logging; operated it during an actual race for over one hour without observed crashes or freezes."),
+    ("h", "Certifications"),
+    ("p", "<b>Dartmouth College:</b> C Programming: Pointers and Memory Management (2023); Linux Basics: The Command Line Interface (2024)"),
+    ("p", "<b>IBM cybersecurity courses (2023–2024):</b> Tools &amp; Cyberattacks; Networking and Storage; Roles, Processes &amp; Operating System Security; Compliance Framework &amp; System Administration"),
     ("h", "Skills"),
     ("p", "<b>Programming Languages:</b> C, C#, Python, SystemVerilog, MATLAB"),
     ("p", "<b>Tools:</b> KiCad, LTspice, QUCS, Proteus, Webots"),
@@ -84,7 +90,7 @@ def build(out):
         PangoCairo.context_set_resolution(lay.get_context(), 72)  # font sizes in real points
         PangoCairo.context_set_font_options(lay.get_context(), FONT_OPTS)
         lay.set_font_description(Pango.FontDescription(f"{FONT} {size}"))
-        lay.set_line_spacing(1.22)
+        lay.set_line_spacing(1.18)
         if wrap:
             lay.set_width(int(wrap * Pango.SCALE))
         if align:
@@ -119,7 +125,7 @@ def build(out):
         if kind == "gap":
             y += a[0]
         elif kind == "h":
-            y += 6
+            y += 5
             _, h = text(a[0], MX, y, 11)
             y += h + 1
             ctx.set_line_width(0.7)
