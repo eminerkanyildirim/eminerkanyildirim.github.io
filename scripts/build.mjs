@@ -26,6 +26,12 @@ for (const project of data.PROJECTS) {
 for (const skill of data.SKILLS) {
   if (skill.project && !slugs.has(skill.project)) throw new Error(`Unknown skill project: ${skill.project}`);
 }
+// Public repo: refuse to build if a phone number slipped into the content sources.
+// shortcut: text sources only, a hand-replaced PDF is not scanned; add a PDF text check in CI if that happens.
+const phone = /\+90|\b0?5\d{2}[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}\b/;
+for (const file of ['assets/js/data.js', 'scripts/cv.py']) {
+  if (phone.test(await readFile(join(repo, file), 'utf8'))) throw new Error(`Phone number found in ${file}; remove it before building`);
+}
 
 const theme = `<script>(function(){try{var t=localStorage.getItem('theme');if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme',matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');}})();</script>`;
 const pages = ['index','about','projects','skills','resume','contact','404','project'];

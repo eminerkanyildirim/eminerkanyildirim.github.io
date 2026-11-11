@@ -64,7 +64,7 @@ const TOOLS = [
 ];
 
 const LANGUAGES = [
-  { name: "English", detail: "Advanced" },
+  { name: "English", detail: "Professional working proficiency" },
   { name: "Turkish", detail: "Native" },
   { name: "German", detail: "Beginner (learning)" },
 ];
@@ -80,11 +80,11 @@ const EXPERIENCE = [
     location: "Manisa, Türkiye",
     period: "Oct 2024 – Present",
     points: [
-      "Test and verify tumble-dryer electronic control boards for functionality, performance and IEC 60335 safety compliance.",
-      "Define engineering requirements and document technical specifications for product development.",
-      "Benchmark products and examine competitor designs to evaluate components for integration.",
-      "Contribute to design decisions with product safety and regulatory compliance in mind.",
-      "Evaluate new component suppliers for cost and quality improvements.",
+      "Verify tumble-dryer electronic control boards and investigate faults using error logs, oscilloscopes and multimeters.",
+      "Track and coordinate prototype builds and board bring-up, and support board-level test and verification.",
+      "Work with the software and firmware teams on hardware–firmware integration.",
+      "Write test procedures based on applicable IEC 60335 requirements, prepare engineering requirements specifications and hardware-development documentation, and report test results.",
+      "Benchmark competitor products and coordinate with suppliers to evaluate alternative components for technical suitability, cost, quality and availability.",
     ],
   },
   {
@@ -93,7 +93,8 @@ const EXPERIENCE = [
     location: "İstanbul, Türkiye",
     period: "Jul 2023 – Aug 2023",
     points: [
-      "Prepared and delivered a technical presentation analysing a communication protocol and comparing it against alternatives.",
+      "Studied Data Distribution Service (DDS), compared it with alternative communication protocols, and presented the technical findings.",
+      "Developed a basic Python application to simulate DDS communication.",
     ],
   },
   {
@@ -102,9 +103,8 @@ const EXPERIENCE = [
     location: "Bursa, Türkiye",
     period: "Jul 2022 – Aug 2022",
     points: [
-      "Inspected CAN bus placement in a vehicle electrical system.",
-      "Standardised signal naming on the model to speed up production-line placement.",
-      "Determined the required CAN bus cable lengths from the system model.",
+      "Reviewed CAN bus routing in an electric-bus electrical-system model and determined the required cable lengths.",
+      "Standardised signal names in the model to support production-line installation.",
     ],
   },
 ];

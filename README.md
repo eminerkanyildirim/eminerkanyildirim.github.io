@@ -34,9 +34,16 @@ Set it before moving the site to another domain or GitHub Pages subpath.
 
 ## CV
 
-The downloadable PDF is `assets/Emin-Erkan-Yildirim-CV.pdf`. Replace that file to
-update the CV; regeneration does not edit its contents. Change `SITE.resumePdf`
-if the filename changes. The owner maintains the PDF separately.
+The downloadable PDF is `assets/Emin-Erkan-Yildirim-CV.pdf`, generated from
+`scripts/cv.py` (needs Python with pycairo and PyGObject/Pango, and the Noto Sans font):
+
+```bash
+python3 scripts/cv.py
+```
+
+Edit the text in `scripts/cv.py` and rerun; it stops with an error if the CV no longer
+fits one page. The PDF is public: never put a phone number in it or in the script.
+Change `SITE.resumePdf` if the filename changes.
 
 ## Project media
 
