@@ -3,6 +3,7 @@
 
 This file and its output are public: keep the phone number out of both.
 Usage: python3 scripts/cv.py [output.pdf]
+       python3 scripts/cv.py --fodt out.fodt   (editable copy; open in LibreOffice or convert to .docx)
 """
 import sys
 from pathlib import Path
@@ -144,6 +145,70 @@ def build(out):
         sys.exit(f"CV overflows one page by {y - (PAGE_H - MY):.0f}pt; shorten it or lower SIZE")
 
 
+def build_fodt(out):
+    """Editable copy (flat OpenDocument). Convert: soffice --headless --convert-to docx <file>."""
+    import re
+    from xml.sax.saxutils import escape
+
+    def runs(markup):  # pango markup (<b>, &amp;) -> ODF spans
+        parts = re.split(r"<b>(.*?)</b>", markup)
+        return "".join(f'<text:span text:style-name="B">{t}</text:span>' if i % 2 else t for i, t in enumerate(parts))
+
+    contact = " | ".join(
+        f'<text:a xlink:type="simple" xlink:href="{href}">{escape(label)}</text:a>' if href else escape(label)
+        for label, href in CONTACT
+    )
+    body, in_list, prev = [], False, None
+    for kind, *a in BODY:
+        if in_list and kind != "li":
+            body.append("</text:list>")
+            in_list = False
+        if kind == "h":
+            body.append(f'<text:p text:style-name="H">{escape(a[0])}</text:p>')
+        elif kind == "row":
+            style = "RowTight" if prev in ("h", "row") else "Row"
+            body.append(f'<text:p text:style-name="{style}">{runs(a[0])}<text:tab/>{escape(a[1])}</text:p>')
+        elif kind == "li":
+            if not in_list:
+                body.append('<text:list text:style-name="L1">')
+                in_list = True
+            body.append(f'<text:list-item><text:p text:style-name="P">{escape(a[0])}</text:p></text:list-item>')
+        elif kind == "p":
+            body.append(f'<text:p text:style-name="P">{runs(a[0])}</text:p>')
+        if kind != "gap":
+            prev = kind
+    Path(out).write_text(f"""<?xml version="1.0" encoding="UTF-8"?>
+<office:document xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" office:version="1.3" office:mimetype="application/vnd.oasis.opendocument.text">
+<office:font-face-decls><style:font-face style:name="Calibri" svg:font-family="Calibri"/></office:font-face-decls>
+<office:styles>
+<style:default-style style:family="paragraph"><style:paragraph-properties fo:margin-top="0cm" fo:margin-bottom="0cm" fo:line-height="108%"/><style:text-properties style:font-name="Calibri" fo:font-size="10.5pt" fo:language="en" fo:country="US"/></style:default-style>
+<style:style style:name="Standard" style:family="paragraph"/>
+<style:style style:name="Internet_20_link" style:display-name="Internet link" style:family="text"><style:text-properties fo:color="{LINK}" style:text-underline-style="solid"/></style:style>
+<text:list-style style:name="L1"><text:list-level-style-bullet text:level="1" text:bullet-char="•"><style:list-level-properties text:list-level-position-and-space-mode="label-alignment"><style:list-level-label-alignment text:label-followed-by="listtab" text:list-tab-stop-position="0.5cm" fo:text-indent="-0.38cm" fo:margin-left="0.5cm"/></style:list-level-properties></text:list-level-style-bullet></text:list-style>
+</office:styles>
+<office:automatic-styles>
+<style:page-layout style:name="pm1"><style:page-layout-properties fo:page-width="21cm" fo:page-height="29.7cm" fo:margin-top="1.1cm" fo:margin-bottom="1.1cm" fo:margin-left="1.4cm" fo:margin-right="1.4cm"/></style:page-layout>
+<style:style style:name="Name" style:family="paragraph" style:master-page-name="Standard"><style:paragraph-properties fo:text-align="center"/><style:text-properties fo:font-size="22pt"/></style:style>
+<style:style style:name="Contact" style:family="paragraph"><style:paragraph-properties fo:text-align="center"/></style:style>
+<style:style style:name="H" style:family="paragraph"><style:paragraph-properties fo:margin-top="0.22cm" fo:margin-bottom="0.04cm" fo:border-bottom="0.75pt solid #000000" fo:padding="0cm"/><style:text-properties fo:font-size="12pt"/></style:style>
+<style:style style:name="Row" style:family="paragraph"><style:paragraph-properties fo:margin-top="0.14cm"><style:tab-stops><style:tab-stop style:position="18.2cm" style:type="right"/></style:tab-stops></style:paragraph-properties></style:style>
+<style:style style:name="RowTight" style:family="paragraph"><style:paragraph-properties><style:tab-stops><style:tab-stop style:position="18.2cm" style:type="right"/></style:tab-stops></style:paragraph-properties></style:style>
+<style:style style:name="P" style:family="paragraph"/>
+<style:style style:name="B" style:family="text"><style:text-properties fo:font-weight="bold"/></style:style>
+</office:automatic-styles>
+<office:master-styles><style:master-page style:name="Standard" style:page-layout-name="pm1"/></office:master-styles>
+<office:body><office:text>
+<text:p text:style-name="Name">Emin Erkan YILDIRIM</text:p>
+<text:p text:style-name="Contact">{contact}</text:p>
+{chr(10).join(body)}
+</office:text></office:body>
+</office:document>
+""", encoding="utf-8")
+
+
 if __name__ == "__main__":
-    default = Path(__file__).resolve().parent.parent / "assets" / "Emin-Erkan-Yildirim-CV.pdf"
-    build(sys.argv[1] if len(sys.argv) > 1 else default)
+    if sys.argv[1:2] == ["--fodt"]:
+        build_fodt(sys.argv[2])
+    else:
+        default = Path(__file__).resolve().parent.parent / "assets" / "Emin-Erkan-Yildirim-CV.pdf"
+        build(sys.argv[1] if len(sys.argv) > 1 else default)
